@@ -18,7 +18,7 @@ Suivez ces étapes pour configurer le projet sur votre machine locale.
 
 Ouvrez un terminal et exécutez la commande suivante pour cloner le projet :
 
-git clone https://github.com/votreUsername/votreProjet.git
+git clone https://github.com/ProtaSymat/PosesItems.git
 cd votreProjet
 
 ### 2. Installer les dépendances

@@ -1,4 +1,4 @@
-# Projet CakePHP de Mathys Girault 🍰
+# Logiciel d'inventaire de location de matériels 🍰
 
 Ce projet, développé avec le framework CakePHP, contient des migrations pour la base de données. Il est réalisé par **Mathys Girault**, étudiant en **année 2**.
 

@@ -1,24 +1,39 @@
 <div class="container">
     <div class="commandes form content">
-        <?= $this->Form->create(null, ['id' => 'formCommande']) ?>
+        <?= $this->Form->create(null, ['id' => 'formCommande', 'class' => 'needs-validation', 'novalidate' => true]) ?>
         <fieldset>
             <legend>Ajouter une Commande</legend>
             
-            <?= $this->Form->control('nom_client', ['label' => 'Nom du Client:', 'type' => 'text', 'id' => 'nom_client']) ?>
+            <?= $this->Form->control('nom_client', [
+                'label' => 'Nom du Client:',
+                'type' => 'text',
+                'id' => 'nom_client',
+                'class' => 'form-control mb-3'
+            ]) ?>
             
-            <select name="materiels" id="materiels">
-                <option value="">Choisir un matériel</option>
-                <?php foreach ($materiels as $materiel) : ?>
-                    <option value="<?= h($materiel->id) ?>" data-prix="<?= h($materiel->prix_location) ?>">
-                        <?= h($materiel->nom) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="button" id="addMateriel">Ajouter Matériel</button>
-            <div id="listeMateriels"></div>
-            <label>Prix Total: <input type="text" id="prixTotal" name="prix_total" readonly value="0"></label>
+            <div class="mb-3">
+                <select name="materiels" id="materiels" class="form-select">
+                    <option value="">Choisir un matériel</option>
+                    <?php foreach ($materiels as $materiel) : ?>
+                        <option value="<?= h($materiel->id) ?>" data-prix="<?= h($materiel->prix_location) ?>">
+                            <?= h($materiel->nom) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <button type="button" id="addMateriel" class="btn btn-primary">Ajouter Matériel</button>
+            </div>
+            
+            <div id="listeMateriels" class="mb-3"></div>
+            
+            <div class="mb-3">
+                <label for="prixTotal" class="form-label">Prix Total:</label>
+                <input type="text" id="prixTotal" name="prix_total" class="form-control" readonly value="0">
+            </div>
         </fieldset>
-        <?= $this->Form->button(__('Soumettre')) ?>
+        <?= $this->Form->button(__('Soumettre'), ['class' => 'btn btn-success']) ?>
         <?= $this->Form->end() ?>
     </div>
 </div>
@@ -29,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addMateriel').addEventListener('click', function() {
         const materielsSelect = document.getElementById('materiels');
         const selectedOption = materielsSelect.options[materielsSelect.selectedIndex];
-        if(selectedOption.value === "") return; // S'assure qu'un matériel est sélectionné
+        if(selectedOption.value === "") return;
         
         const nomMateriel = selectedOption.text;
         const materielId = selectedOption.value;
@@ -38,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const liste = document.getElementById('listeMateriels');
         const item = document.createElement('div');
         
-        // Création du contenu de l'item avec gestion de la quantité et du prix
         item.innerHTML = `${nomMateriel} - Prix: ${prix.toFixed(2)}€ Quantité: <input type="number" value="1" class="quantiteMateriel" style="width: 50px;"> <button type="button" class="deleteMateriel">X</button>`;
         item.innerHTML += `<input type="hidden" name="details[${materielIndex}][materiel_id]" value="${materielId}">`;
         item.innerHTML += `<input type="hidden" name="details[${materielIndex}][prix_total]" class="prixTotalMateriel" value="${prix}">`;
@@ -49,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantiteInput = item.querySelector('.quantiteMateriel');
         const deleteButton = item.querySelector('.deleteMateriel');
         
-        // Mise à jour du prix total lors de la modification de la quantité
         quantiteInput.addEventListener('input', function() {
             const quantite = parseInt(this.value, 10) || 1;
             const prixTotal = quantite * prix;

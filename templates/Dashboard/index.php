@@ -39,26 +39,31 @@
         <div class="card-body">
             <?php if (!empty($commandes)): ?>
                 <div class="list-group">
-                    <?php foreach ($commandes as $commande): ?>
-                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Commande #<?= h($commande->id) ?></h5>
-                                <small>Date: <?= h($commande->date_commande->format('d/m/Y')) ?></small>
-                            </div>
-                            <p class="mb-1">Client: <?= h($commande->nom_client) ?></p>
-                            <small>Détails de la commande:</small>
-                            <ul>
-                                <?php foreach ($commande->details_commande as $detail): ?>
-                                    <li><?= h($detail->materiel->nom) ?> - Quantité: <?= h($detail->quantite) ?> - Prix: <?= $this->Number->currency($detail->prix_total, 'EUR') ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </a>
-                    <?php endforeach; ?>
+                <?php foreach ($commandes as $commande): ?>
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Commande #<?= h($commande->id) ?></h5>
+            <small>Date: <?= h($commande->date_commande->format('d/m/Y')) ?></small>
+        </div>
+        <p class="mb-1">Client: <?= h($commande->nom_client) ?></p>
+        <small>Détails de la commande:</small>
+        <ul>
+            <?php foreach ($commande->details_commande as $detail): ?>
+                <li><?= h($detail->materiel->nom) ?> - Quantité: <?= h($detail->quantite) ?> - Prix: <?= $this->Number->currency($detail->prix_total, 'EUR') ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <?= $this->Form->create(null, ['url' => ['action' => 'delete', $commande->id]]) ?>
+            <?= $this->Form->button('Restituer la commande', ['class' => 'btn btn-danger', 'type' => 'submit']) ?>
+            <?= $this->Form->end() ?>
+    </div>
+<?php endforeach; ?>
                 </div>
             <?php else: ?>
                 <p>Aucune commande trouvée.</p>
             <?php endif; ?>
         </div>
+        <?= $this->Html->link('Ajouter une commande', ['controller' => 'Commandes', 'action' => 'add'], ['class' => 'btn btn-primary']) ?>
+
     </div>
 </div>
     </div>

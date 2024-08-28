@@ -109,13 +109,20 @@ class CommandesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $commande = $this->Commandes->get($id);
+        $commande = $this->Commandes->get($id, [
+            'contain' => ['DetailsCommande'],
+        ]);
+    
         if ($this->Commandes->delete($commande)) {
-            $this->Flash->success(__('The commande has been deleted.'));
+            // Supprime également les détails de la commande
+            foreach ($commande->details_commande as $detail) {
+                $this->Commandes->DetailsCommande->delete($detail);
+            }
+            $this->Flash->success('La commande a été restituée avec succès.');
         } else {
-            $this->Flash->error(__('The commande could not be deleted. Please, try again.'));
+            $this->Flash->error('La commande n\'a pas pu être restituée. Veuillez réessayer.');
         }
-
+    
         return $this->redirect(['action' => 'index']);
     }
 }
